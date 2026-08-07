@@ -73,6 +73,22 @@ sitemap.xml / robots.txt / .nojekyll
 
 ---
 
+## ヒーローの動画
+
+トップのヒーローは動画（`assets/video/hero.mp4`）です。差し替える場合は同じファイル名で置き換えれば動きます。
+
+- **ループ**: 5秒の素材を「順再生 → 逆再生」でつないだ10秒のピンポンループ。始点と終点が一致するため、繰り返しても画が飛びません
+- **2サイズ**: デスクトップ 1920×1080（1.5MB）／スマートフォン 1280×720（0.5MB）。画面幅で自動的に出し分けます
+- **フォールバック**: 静止画（`hero-port.webp`）を下に敷き、動画が**実際に再生され始めてから**フェードインします。自動再生がブロックされても、iPhoneが低電力モードでも、ヒーローが黒くなることはありません
+- **読み込まない条件**: `prefers-reduced-motion`（視差軽減）、省データモード、2G相当の低速回線では動画を取得しません
+- 音声トラックは含みません（`autoplay muted playsinline` で iOS のインライン自動再生条件を満たしています）
+
+差し替え素材を作る際の ffmpeg コマンド:
+
+```bash
+ffmpeg -i 元素材.mp4 -filter_complex "[0:v]split[a][b];[b]reverse[r];[a][r]concat=n=2:v=1[v]" -map "[v]" -an -c:v libx264 -profile:v main -pix_fmt yuv420p -crf 27 -preset slow -movflags +faststart assets/video/hero.mp4
+```
+
 ## 画像について
 
 - 実績写真（陣屋様の料理・店内、おもちのプリン、施工事例）は提供資料から抽出したものです。
