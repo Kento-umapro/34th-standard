@@ -17,7 +17,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400&family=Noto+Sans+JP:wght@300;400;500&family=Noto+Serif+JP:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script>document.documentElement.className="js"</script>
 <link rel="stylesheet" href="assets/css/style.css">
 <link rel="preload" as="image" href="assets/img/hero-port.webp">
@@ -129,10 +129,14 @@
 <!-- ===================== HERO ===================== -->
 <section class="hero">
   <div class="hero__media">
-    <img src="assets/img/hero-port.webp"
+    <img class="hero__still" src="assets/img/hero-port.webp"
          srcset="assets/img/hero-port-sm.webp 1280w, assets/img/hero-port.webp 2560w"
          sizes="100vw"
          alt="夜明けのコンテナターミナル" fetchpriority="high" width="2560" height="1434">
+    <video class="hero__vid"
+           data-src="assets/video/hero.mp4"
+           data-src-sm="assets/video/hero-sm.mp4"
+           muted loop playsinline preload="none" aria-hidden="true" tabindex="-1"></video>
   </div>
   <div class="hero__scrim"></div>
   <div class="hero__grain"></div>
@@ -296,7 +300,7 @@
           <text class="sub" x="928" y="246" text-anchor="middle">34.05°N 118.24°W</text>
         </g>
 
-        <text x="595" y="96" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-size="17" fill="#7FCBE8">approx. 8,900 km</text>
+        <text x="595" y="96" text-anchor="middle" font-family="Jost, sans-serif" font-size="13" letter-spacing="3" fill="#7FCBE8">approx. 8,900 km</text>
       </svg>
 
       <div class="map-mobile">

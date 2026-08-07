@@ -66,6 +66,48 @@
   }
 
   /* ---------------------------------------------------------------------
+     2b. Hero film
+     Loaded from JS so we can pick the right cut for the screen and skip it
+     entirely for reduced-motion or save-data. The still image underneath is
+     the fallback, so nothing here is load-bearing.
+     --------------------------------------------------------------------- */
+  var hv = document.querySelector('.hero__vid');
+  if (hv) {
+    var conn = navigator.connection || {};
+    var lean = reduced || conn.saveData === true ||
+               /2g/.test(String(conn.effectiveType || ''));
+
+    if (lean) {
+      hv.remove();
+    } else {
+      var small = window.matchMedia('(max-width: 700px)').matches;
+      var src = (small && hv.dataset.srcSm) ? hv.dataset.srcSm : hv.dataset.src;
+      var source = document.createElement('source');
+      source.src = src;
+      source.type = 'video/mp4';
+      hv.appendChild(source);
+      hv.load();
+
+      hv.addEventListener('playing', function () {
+        hv.classList.add('is-playing');
+      });
+      hv.addEventListener('error', function () { hv.remove(); }, true);
+
+      var tryPlay = function () {
+        var p = hv.play();
+        if (p && p.catch) p.catch(function () { /* autoplay refused — keep the still */ });
+      };
+      if (hv.readyState >= 2) tryPlay();
+      else hv.addEventListener('canplay', tryPlay, { once: true });
+
+      // iOS pauses media when the tab is backgrounded; resume on return
+      document.addEventListener('visibilitychange', function () {
+        if (!document.hidden && hv.paused) tryPlay();
+      });
+    }
+  }
+
+  /* ---------------------------------------------------------------------
      3. Header state
      --------------------------------------------------------------------- */
   var hdr = document.querySelector('.hdr');
