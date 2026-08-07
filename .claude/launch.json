@@ -1,0 +1,6 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "34th-standard", "runtimeExecutable": "python3", "runtimeArgs": ["-m", "http.server", "4534"], "port": 4534 }
+  ]
+}

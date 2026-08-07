@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kento-umapro.github.io/34th-standard/sitemap.xml
