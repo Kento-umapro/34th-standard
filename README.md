@@ -77,17 +77,19 @@ sitemap.xml / robots.txt / .nojekyll
 
 トップのヒーローは動画（`assets/video/hero.mp4`）です。差し替える場合は同じファイル名で置き換えれば動きます。
 
-- **ループ**: 5秒の素材を「順再生 → 逆再生」でつないだ10秒のピンポンループ。始点と終点が一致するため、繰り返しても画が飛びません
-- **2サイズ**: デスクトップ 1920×1080（1.5MB）／スマートフォン 1280×720（0.5MB）。画面幅で自動的に出し分けます
+- **ループ**: 4秒。常に同じ方向（港へ寄っていく向き）に進み、末尾の1秒で冒頭のカットへクロスフェードして戻ります。逆再生は使っていないので、寄る／引くを往復するような動きにはなりません
+- **2サイズ**: デスクトップ 1920×1080（780KB）／スマートフォン 1280×720（270KB）。画面幅で自動的に出し分けます
 - **フォールバック**: 静止画（`hero-port.webp`）を下に敷き、動画が**実際に再生され始めてから**フェードインします。自動再生がブロックされても、iPhoneが低電力モードでも、ヒーローが黒くなることはありません
 - **読み込まない条件**: `prefers-reduced-motion`（視差軽減）、省データモード、2G相当の低速回線では動画を取得しません
 - 音声トラックは含みません（`autoplay muted playsinline` で iOS のインライン自動再生条件を満たしています）
 
-差し替え素材を作る際の ffmpeg コマンド:
+差し替え素材をシームレスループに加工する ffmpeg コマンド（`X` はクロスフェード秒数、`OFF` は「元素材の長さ − 2X」）:
 
 ```bash
-ffmpeg -i 元素材.mp4 -filter_complex "[0:v]split[a][b];[b]reverse[r];[a][r]concat=n=2:v=1[v]" -map "[v]" -an -c:v libx264 -profile:v main -pix_fmt yuv420p -crf 27 -preset slow -movflags +faststart assets/video/hero.mp4
+ffmpeg -i 元素材.mp4 -filter_complex "[0:v]split[body][pre];[pre]trim=duration=1,format=yuva420p,fade=t=in:st=0:d=1:alpha=1,setpts=PTS-STARTPTS+OFF/TB[jt];[body]trim=start=1,setpts=PTS-STARTPTS[main];[main][jt]overlay=eof_action=pass[v]" -map "[v]" -an -c:v libx264 -profile:v main -pix_fmt yuv420p -crf 27 -preset slow -movflags +faststart assets/video/hero.mp4
 ```
+
+スマートフォン用は、できあがった `hero.mp4` に `-vf scale=1280:720 -crf 30` をかけて `hero-sm.mp4` として書き出します。
 
 ## 画像について
 
