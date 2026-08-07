@@ -77,13 +77,20 @@ sitemap.xml / robots.txt / .nojekyll
 
 トップのヒーローは動画（`assets/video/hero.mp4`）です。差し替える場合は同じファイル名で置き換えれば動きます。
 
-- **ループ**: 4秒。常に同じ方向（港へ寄っていく向き）に進み、末尾の1秒で冒頭のカットへクロスフェードして戻ります。逆再生は使っていないので、寄る／引くを往復するような動きにはなりません
-- **2サイズ**: デスクトップ 1920×1080（780KB）／スマートフォン 1280×720（270KB）。画面幅で自動的に出し分けます
+- **ループ**: 7.5秒。常に同じ方向（港へ寄っていく向き）に進み、末尾の1.2秒で冒頭のカットへクロスフェードして戻ります。逆再生は使っていないので、寄る／引くを往復するような動きにはなりません
+- **速度**: 元素材を1.75倍の長さに引き伸ばしています。単純に引き伸ばすとコマ落ちしたように見えるため、`minterpolate` で中間フレームを生成して 24fps を維持しています
+- **2サイズ**: デスクトップ 1920×1080（1.1MB）／スマートフォン 1280×720（360KB）。画面幅で自動的に出し分けます
 - **フォールバック**: 静止画（`hero-port.webp`）を下に敷き、動画が**実際に再生され始めてから**フェードインします。自動再生がブロックされても、iPhoneが低電力モードでも、ヒーローが黒くなることはありません
 - **読み込まない条件**: `prefers-reduced-motion`（視差軽減）、省データモード、2G相当の低速回線では動画を取得しません
 - 音声トラックは含みません（`autoplay muted playsinline` で iOS のインライン自動再生条件を満たしています）
 
-差し替え素材をシームレスループに加工する ffmpeg コマンド（`X` はクロスフェード秒数、`OFF` は「元素材の長さ − 2X」）:
+差し替え素材の動きが速すぎる場合、まずフレーム補間つきで引き伸ばします（1.75倍の例）:
+
+```bash
+ffmpeg -i 元素材.mp4 -vf "setpts=1.75*PTS,minterpolate=fps=24:mi_mode=mci:mc_mode=aobmc:me_mode=bidir:vsbmc=1" -an -c:v libx264 -crf 18 slow.mp4
+```
+
+続いてシームレスループに加工します（`X` はクロスフェード秒数、`OFF` は「素材の長さ − 2X」）:
 
 ```bash
 ffmpeg -i 元素材.mp4 -filter_complex "[0:v]split[body][pre];[pre]trim=duration=1,format=yuva420p,fade=t=in:st=0:d=1:alpha=1,setpts=PTS-STARTPTS+OFF/TB[jt];[body]trim=start=1,setpts=PTS-STARTPTS[main];[main][jt]overlay=eof_action=pass[v]" -map "[v]" -an -c:v libx264 -profile:v main -pix_fmt yuv420p -crf 27 -preset slow -movflags +faststart assets/video/hero.mp4
