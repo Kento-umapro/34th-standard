@@ -941,6 +941,19 @@ html[lang="en"] .contact-cards h3 { font-weight: 600; }
   display: inline-block; margin-top: 14px;
 }
 .contact-cards .tel:hover { color: var(--brand); }
+.contact-cards .mail {
+  font-family: var(--f-en);
+  font-size: clamp(16px, 1.9vw, 21px);
+  letter-spacing: .02em;
+  color: var(--navy-800);
+  display: inline-block;
+  margin-top: 16px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--line);
+  word-break: break-all;
+  transition: color .4s, border-color .4s;
+}
+.contact-cards .mail:hover { color: var(--brand); border-color: var(--brand); }
 
 /* --------------------------------------------------------------------------
    19. Footer
