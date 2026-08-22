@@ -811,6 +811,19 @@ html[lang="en"] .card__ttl { font-weight: 600; }
 .case__figs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .case__figs img { width: 100%; height: 100%; object-fit: cover; aspect-ratio: 4/3; }
 .case__figs .span2 { grid-column: span 2; aspect-ratio: 16/8; }
+/* two product shots side by side */
+.duo-shot { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.duo-shot figure { margin: 0; background: #0a0a0b; }
+.duo-shot img { width: 100%; display: block; }
+.duo-shot figcaption {
+  font-family: var(--f-en);
+  font-size: 11px;
+  letter-spacing: .24em;
+  text-align: center;
+  color: rgba(255, 255, 255, .78);
+  padding: 0 0 15px;
+}
+
 .case__pts { margin-top: 30px; display: grid; gap: 14px; }
 .case__pts li { position: relative; padding-left: 26px; font-size: 14px; line-height: 2.05; font-weight: 300; }
 .case__pts li::before {
