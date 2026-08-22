@@ -663,12 +663,24 @@ html[lang="en"] .stmt__jp { font-weight: 500; line-height: 1.35; letter-spacing:
 .stats .n sup, .stats .n .u { font-size: .38em; margin-left: 5px; color: var(--brand-light); letter-spacing: .1em; }
 .stats .k { font-size: 12px; letter-spacing: .14em; color: rgba(255,255,255,.62); margin-top: 14px; }
 
+/* same tiles on a light background */
+.stats--light { border-top-color: var(--line); }
+.stats--light li { border-bottom-color: var(--line); border-right-color: var(--line); }
+.stats--light .n { color: var(--navy-800); }
+.stats--light .n sup, .stats--light .n .u { color: var(--brand); }
+.stats--light .k { color: var(--ink-50); }
+
 /* --------------------------------------------------------------------------
    11. 34°N map
    -------------------------------------------------------------------------- */
 .mapwrap { position: relative; margin-top: clamp(40px, 6vw, 70px); }
 .mapwrap svg { width: 100%; height: auto; overflow: visible; }
-.map-dots { fill: rgba(255,255,255,.20); }
+.map-land {
+  fill: rgba(255, 255, 255, .085);
+  stroke: rgba(255, 255, 255, .24);
+  stroke-width: .7;
+  stroke-linejoin: round;
+}
 .map-lat { stroke: var(--gold); stroke-width: 1; stroke-dasharray: 5 7; opacity: .5; }
 .map-arc {
   fill: none;
@@ -682,8 +694,8 @@ html[lang="en"] .stmt__jp { font-weight: 500; line-height: 1.35; letter-spacing:
 .is-in .map-arc { animation: draw 2.6s var(--ease-out-expo) .3s forwards; }
 @keyframes draw { to { stroke-dashoffset: 0; } }
 .map-pulse { fill: var(--brand-light); transform-origin: center; }
-.map-city text { font-family: var(--f-en); font-size: 13px; letter-spacing: .18em; fill: #fff; }
-.map-city .sub { font-size: 9.5px; fill: var(--brand-light); letter-spacing: .22em; }
+.map-city text { font-family: var(--f-en); font-size: 15px; letter-spacing: .2em; fill: #fff; }
+.map-city .sub { font-size: 10px; fill: var(--brand-light); letter-spacing: .18em; }
 .map-city circle.core { fill: #fff; }
 .map-city circle.halo { fill: none; stroke: var(--brand); stroke-width: 1.2; opacity: .8; }
 .is-in .map-city circle.halo { animation: halo 3s ease-out infinite; }
@@ -732,6 +744,7 @@ html[lang="en"] .stmt__jp { font-weight: 500; line-height: 1.35; letter-spacing:
 .cards { display: grid; gap: 1px; background: var(--line); border-block: 1px solid var(--line); }
 @media (min-width: 700px) { .cards { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1080px) { .cards--4 { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 980px)  { .cards--3 { grid-template-columns: repeat(3, 1fr); } }
 
 .card {
   position: relative;
